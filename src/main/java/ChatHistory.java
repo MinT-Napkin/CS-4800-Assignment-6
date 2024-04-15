@@ -9,9 +9,6 @@ public class ChatHistory {
     }
 
     public void addMessage(Message message) {
-        // this is to artificially add minutes to the time stamp for display purposes
-        message.setTimestamp(messageHistory.size() * 60 * 1000);
-
         messageHistory.push(message);
     }
 

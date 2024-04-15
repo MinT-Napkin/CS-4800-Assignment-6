@@ -14,23 +14,24 @@ class ChatServer {
     }
 
     public void registerUser(User user) {
+        user.connectToChatServer(this);
         users.put(user.getName(), user);
         blockedUsers.put(user, new ArrayList<>());
     }
 
     public void unregisterUser(User user) {
         users.remove(user.getName());
-        blockedUsers.remove(user.getName());
+        blockedUsers.remove(user);
     }
 
     public void sendMessage(Message message) {
         for (User recipient : message.getRecipients()) {
-            if (!blockedUsers.get(recipient).contains(message.getSender().getName())) {
+            if (!blockedUsers.get(recipient).contains(message.getSender())) {
                 users.get(recipient.getName()).receiveMessage(message);
             }
             else
             {
-                System.out.println("Message blocked");
+                System.out.println("User did not receive message (user blocked this person)");
             }
         }
     }
@@ -49,10 +50,7 @@ class ChatServer {
     }
 
     public void blockUser(User user, User blockedUser) {
-        blockedUsers.get(user.getName()).add(blockedUser);
+        blockedUsers.get(user).add(blockedUser);
     }
 
-    public void unblockUser(User user, User unblockedUser) {
-        blockedUsers.get(user.getName()).remove(unblockedUser);
-    }
 }

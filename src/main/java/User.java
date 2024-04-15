@@ -2,16 +2,14 @@ import java.util.List;
 
 public class User {
     private final String name;
-    private final ChatServer chatServer;
+    private ChatServer chatServer;
     private final ChatHistory chatHistory;
     private MessageMemento messageMemento;
 
-    public User(String name, ChatServer chatServer) {
+    public User(String name) {
         this.name = name;
-        this.chatServer = chatServer;
         this.chatHistory = new ChatHistory();
         this.messageMemento = new MessageMemento("", System.currentTimeMillis());
-        chatServer.registerUser(this);
     }
 
     public String getName() {
@@ -19,6 +17,8 @@ public class User {
     }
 
     public void sendMessage(List<User> recipients, String content) {
+        checkServerStatus();
+
         Message newMessage = new Message(this, recipients, content);
 
         save(newMessage.getMessageContent(), newMessage.getTimestamp());
@@ -29,14 +29,6 @@ public class User {
     public void receiveMessage(Message message) {
         System.out.println(name + " received a message: " + message);
         chatHistory.addMessage(message);
-    }
-
-    public void blockUser(User blockedUser) {
-        chatServer.blockUser(this, blockedUser);
-    }
-
-    public void unblockUser(User unblockedUser) {
-        chatServer.unblockUser(this, unblockedUser);
     }
 
     public void save(String message, double timestamp) {
@@ -56,12 +48,26 @@ public class User {
 
     public void undoLastMessage()
     {
+        checkServerStatus();
         chatServer.undoMessage(this);
         System.out.println("\nUSER " + name + " UNDID THEIR MESSAGE.");
+    }
+
+    public void connectToChatServer(ChatServer chatServer)
+    {
+        this.chatServer = chatServer;
     }
 
     public void viewChatHistory() {
         System.out.println(name + "'s chat history: ");
         System.out.println(chatHistory);
+    }
+
+    private void checkServerStatus()
+    {
+        if (chatServer == null) {
+            System.out.println("User " + name + " is not connected to a server.");
+            return;
+        }
     }
 }
