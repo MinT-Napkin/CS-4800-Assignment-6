@@ -1,7 +1,9 @@
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
-public class ChatHistory {
+public class ChatHistory implements IterableByUser {
     private final Deque<Message> messageHistory;
 
     public ChatHistory() {
@@ -33,4 +35,41 @@ public class ChatHistory {
         }
         return sb.toString();
     }
+
+    @Override
+    public Iterator<Message> iterator(User userToSearchWith) {
+        return new Iterator<>() {
+            private Iterator<Message> dequeIterator = messageHistory.iterator();
+            private Message nextMessage = null;
+
+            @Override
+            public boolean hasNext() {
+                while (dequeIterator.hasNext()) {
+                    Message message = dequeIterator.next();
+                    if (message.getSender().getName().equals(userToSearchWith.getName())) {
+                        nextMessage = message;
+                        return true;
+                    }
+                }
+                nextMessage = null;
+                return false;
+            }
+
+            @Override
+            public Message next() {
+                if (nextMessage == null && !hasNext()) {
+                    return null;
+                }
+                Message message = nextMessage;
+                nextMessage = null;
+                return message;
+            }
+
+            @Override
+            public void remove() {
+                Iterator.super.remove();
+            }
+        };
+    }
+
 }

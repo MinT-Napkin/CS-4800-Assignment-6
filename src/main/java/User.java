@@ -1,6 +1,7 @@
+import java.util.Iterator;
 import java.util.List;
 
-public class User {
+public class User implements IterableByUser{
     private final String name;
     private ChatServer chatServer;
     private final ChatHistory chatHistory;
@@ -61,6 +62,11 @@ public class User {
     public void viewChatHistory() {
         System.out.println(name + "'s chat history: ");
         System.out.println(chatHistory);
+    }
+
+    @Override
+    public Iterator<Message> iterator(User userToSearchWith) {
+        return chatHistory.iterator(userToSearchWith);
     }
 
     private void checkServerStatus()
