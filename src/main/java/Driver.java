@@ -42,10 +42,24 @@ public class Driver {
         userCarriet.viewChatHistory();
 
         System.out.println("\n");
-        System.out.println("Nimo's User Filtered Chat History:");
+        System.out.println("Nimo's User Filtered Chat History (filter Nimo):");
         Iterator<Message> userIterator = userNimo.iterator(userNimo);
         while (userIterator.hasNext()) {
             Message message = userIterator.next();
+            System.out.println(message);
+        }
+        System.out.println("\n");
+        System.out.println("Nimo's User Filtered Chat History (filter Chu):");
+        Iterator<Message> userIterator2 = userNimo.iterator(userChu);
+        while (userIterator2.hasNext()) {
+            Message message = userIterator2.next();
+            System.out.println(message);
+        }
+        System.out.println("\n");
+        System.out.println("Nimo's User Filtered Chat History (filter Carriet):");
+        Iterator<Message> userIterator3 = userNimo.iterator(userCarriet);
+        while (userIterator3.hasNext()) {
+            Message message = userIterator3.next();
             System.out.println(message);
         }
     }
