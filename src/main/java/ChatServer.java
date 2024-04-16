@@ -13,6 +13,14 @@ class ChatServer {
         this.blockedUsers = new HashMap<>();
     }
 
+    public Map<String, User> getUsers() {
+        return users;
+    }
+
+    public Map<User, List<User>> getBlockedUsers() {
+        return blockedUsers;
+    }
+
     public void registerUser(User user) {
         user.connectToChatServer(this);
         users.put(user.getName(), user);
@@ -20,8 +28,7 @@ class ChatServer {
     }
 
     public void unregisterUser(User user) {
-        users.remove(user.getName());
-        blockedUsers.remove(user);
+        user.connectToChatServer(null);
     }
 
     public void sendMessage(Message message) {

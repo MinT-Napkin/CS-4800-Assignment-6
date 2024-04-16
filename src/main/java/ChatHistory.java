@@ -10,6 +10,10 @@ public class ChatHistory implements IterableByUser {
         this.messageHistory = new LinkedList<>();
     }
 
+    public Deque<Message> getMessageHistory() {
+        return messageHistory;
+    }
+
     public void addMessage(Message message) {
         messageHistory.push(message);
     }
@@ -39,7 +43,7 @@ public class ChatHistory implements IterableByUser {
     @Override
     public Iterator<Message> iterator(User userToSearchWith) {
         return new Iterator<>() {
-            private Iterator<Message> dequeIterator = messageHistory.iterator();
+            private final Iterator<Message> dequeIterator = messageHistory.iterator();
             private Message nextMessage = null;
 
             @Override

@@ -14,15 +14,27 @@ public class Driver {
         chatServer.registerUser(userChu);
         chatServer.registerUser(userCarriet);
 
-        //this calls the sendMessage method in ChatServer
         userNimo.sendMessage(Arrays.asList(userChu, userCarriet), "SUP GUYS");
         userNimo.sendMessage(Arrays.asList(userChu, userCarriet), "WANNA HEAR A JOKE?");
-        userNimo.sendMessage(Arrays.asList(userCarriet), "Hey man... wanna hear a joke? :3");
-        userChu.sendMessage(Arrays.asList(userNimo, userCarriet), "The hell you want?");
-        userChu.sendMessage(Arrays.asList(userNimo, userCarriet), "Busy rn.");
+        userChu.sendMessage(Arrays.asList(userNimo), "The hell you want?");
+        userChu.undoLastMessage();
+        userChu.sendMessage(Arrays.asList(userNimo), "Busy rn.");
+        userCarriet.sendMessage(Arrays.asList(userNimo), "Sure?");
+        userNimo.sendMessage(Arrays.asList(userChu, userCarriet), "What do you call a mouse that likes mozzarella cheese?");
+        userNimo.undoLastMessage();
+        userNimo.sendMessage(Arrays.asList(userChu, userCarriet), "What do you call a rat that likes mozzarella cheese?");
 
-        chatServer.blockUser(userCarriet, userNimo);
-        userNimo.sendMessage(Arrays.asList(userCarriet), "herro?");
+        chatServer.blockUser(userChu, userNimo);
+        userNimo.sendMessage(Arrays.asList(userChu, userCarriet), "herro?");
+        userCarriet.sendMessage(Arrays.asList(userNimo), "uuuh, i dunno");
+        userCarriet.undoLastMessage();
+        userCarriet.sendMessage(Arrays.asList(userNimo), "cheesed rat?");
+
+        userNimo.sendMessage(Arrays.asList(userChu, userCarriet), "A CHEESED RAT NGAHAHAHA--");
+        userCarriet.sendMessage(Arrays.asList(userNimo), "ok");
+
+        chatServer.unregisterUser(userNimo);
+        userNimo.sendMessage(Arrays.asList(userChu, userCarriet), "herro? :3"); //should not appear
 
         System.out.println("\n");
         userNimo.viewChatHistory();

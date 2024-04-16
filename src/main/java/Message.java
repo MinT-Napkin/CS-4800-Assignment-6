@@ -31,10 +31,6 @@ class Message {
         return timestamp;
     }
 
-    public void setTimestamp(double adjustment) {
-        this.timestamp += adjustment;
-    }
-
     @Override
     public String toString() {
         Date date = new Date((long) timestamp);

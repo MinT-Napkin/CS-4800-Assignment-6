@@ -18,13 +18,14 @@ public class User implements IterableByUser{
     }
 
     public void sendMessage(List<User> recipients, String content) {
-        checkServerStatus();
+        if(checkServerStatus())
+        {
+            Message newMessage = new Message(this, recipients, content);
 
-        Message newMessage = new Message(this, recipients, content);
-
-        save(newMessage.getMessageContent(), newMessage.getTimestamp());
-        chatServer.sendMessage(newMessage);
-        chatHistory.addMessage(newMessage);
+            save(newMessage.getMessageContent(), newMessage.getTimestamp());
+            chatServer.sendMessage(newMessage);
+            chatHistory.addMessage(newMessage);
+        }
     }
 
     public void receiveMessage(Message message) {
@@ -37,21 +38,12 @@ public class User implements IterableByUser{
         messageMemento.setTimestampState(timestamp);
     }
 
-    public MessageMemento getMessageMemento()
-    {
-        return messageMemento;
-    }
-
-    public ChatHistory getChatHistory()
-    {
-        return chatHistory;
-    }
-
     public void undoLastMessage()
     {
-        checkServerStatus();
-        chatServer.undoMessage(this);
-        System.out.println("\nUSER " + name + " UNDID THEIR MESSAGE.");
+        if(checkServerStatus()){
+            chatServer.undoMessage(this);
+            System.out.println("USER " + name + " UNDID THEIR MESSAGE.");
+        }
     }
 
     public void connectToChatServer(ChatServer chatServer)
@@ -69,11 +61,24 @@ public class User implements IterableByUser{
         return chatHistory.iterator(userToSearchWith);
     }
 
-    private void checkServerStatus()
+    public MessageMemento getMessageMemento()
+    {
+        return messageMemento;
+    }
+
+    public ChatHistory getChatHistory()
+    {
+        return chatHistory;
+    }
+
+    public ChatServer getChatServer() { return chatServer; }
+
+    private boolean checkServerStatus()
     {
         if (chatServer == null) {
             System.out.println("User " + name + " is not connected to a server.");
-            return;
+            return false;
         }
+        return true;
     }
 }
